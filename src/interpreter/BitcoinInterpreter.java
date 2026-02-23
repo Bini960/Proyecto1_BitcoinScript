@@ -2,6 +2,9 @@ package interpreter;
 
 import crypto.CryptoMock;
 import java.util.ArrayDeque;
+
+import operations.LogicOperations;
+import operations.MathOperations;
 import operations.StackOperations;
 
 public class BitcoinInterpreter {
@@ -9,12 +12,16 @@ public class BitcoinInterpreter {
     private ArrayDeque<String> stack;
     private CryptoMock crypto;
     private StackOperations stackOps;
+    private LogicOperations logicOps;
+    private MathOperations mathOps;  
 
     public BitcoinInterpreter() {
         // Inicializa la memoria principal y el simulador criptografico
         this.stack = new ArrayDeque<>();
         this.crypto = new CryptoMock();
         this.stackOps = new StackOperations();
+        this.logicOps = new LogicOperations(); 
+        this.mathOps = new MathOperations();
     }
 
     // Devuelve la pila actual
@@ -55,6 +62,18 @@ public class BitcoinInterpreter {
                 if (token.equals("OP_DUP") || token.equals("OP_DROP") || token.equals("OP_SWAP") || token.equals("OP_OVER")) {
                     stackOps.execute(token, stack, crypto);
                 } 
+
+                else if (token.equals("OP_EQUAL") || token.equals("OP_EQUALVERIFY") || token.equals("OP_NOT") || token.equals("OP_BOOLAND") || token.equals("OP_BOOLOR")) {
+                        logicOps.execute(token, stack, crypto);
+                        
+                }
+                
+                else if (token.equals("OP_ADD") || token.equals("OP_SUB") || token.equals("OP_NUMEQUALVERIFY") || token.equals("OP_LESSTHAN") || token.equals("OP_GREATERTHAN") || token.equals("OP_LESSTHANOREQUAL") || token.equals("OP_GREATERTHANOREQUAL")) {
+                        mathOps.execute(token, stack, crypto);
+                        
+                }
+
+                
                 // Detiene la ejecucion si la verificacion falla
                 else if (token.equals("OP_VERIFY")) {
                     if (stack.isEmpty() || stack.pop().equals("0")) {
