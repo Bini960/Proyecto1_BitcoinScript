@@ -3,8 +3,19 @@ package operations;
 import crypto.CryptoMock;
 import java.util.ArrayDeque;
 
+/**
+ * Clase encargada de manejar las operaciones booleanas y comparaciones logicas
+ * Implementa la interfaz Opcode.
+ */
 public class LogicOperations implements Opcode {
 
+    /**
+     * Ejecuta una instruccion logica y actualiza la pila segun el resultado.
+     *
+     * @param opcode La instruccion logica a procesar (como OP_EQUAL, OP_NOT).
+     * @param stack  La pila principal de la transaccion.
+     * @param crypto La instancia criptografica compartida (no utilizada aqui, requerida por contrato).
+     */
     @Override
     public void execute(String opcode, ArrayDeque<String> stack, CryptoMock crypto) {
         // Validar que haya suficientes elementos para operar

@@ -3,8 +3,19 @@ package operations;
 import crypto.CryptoMock;
 import java.util.ArrayDeque;
 
+/**
+ * Clase que maneja la estructura de la memoria (la pila)
+ * Implementa la interfaz Opcode
+ */
 public class StackOperations implements Opcode {
 
+    /**
+     * Ejecuta una operacion de reordenamiento, clonacion o eliminacion de elementos de la pila.
+     *
+     * @param opcode La operacion de pila a realizar (ejemplo: OP_DUP, OP_DROP).
+     * @param stack  La estructura LIFO a modificar.
+     * @param crypto Instancia criptografica (requerida por contrato).
+     */
     @Override
     public void execute(String opcode, ArrayDeque<String> stack, CryptoMock crypto) {
         

@@ -2,14 +2,18 @@ package interpreter;
 
 import crypto.CryptoMock;
 import java.util.ArrayDeque;
-import operations.StackOperations;
+import operations.CryptoOperations;
 import operations.LogicOperations;
 import operations.MathOperations;
-import operations.CryptoOperations;
+import operations.StackOperations;
 
+/**
+ * Interprete de Bitcoin Script.
+ * Evalua secuencias de tokens utilizando un enfoque basado en pila.
+ */
 public class BitcoinInterpreter {
 
-    //  ATRIBUTOS 
+    // ATRIBUTOS 
     // ArrayDeque ofrece mejor rendimiento que Stack
     private ArrayDeque<String> stack;
     
@@ -22,7 +26,10 @@ public class BitcoinInterpreter {
     private MathOperations mathOps;   
     private CryptoOperations cryptoOps; 
 
-    // CONSTRUCTOR 
+    /**
+     * Constructor del interprete
+     * Inicializa la memoria principal y las distintas operaciones.
+     */
     public BitcoinInterpreter() {
         // se inicializan todos los objetos en memoria al crear el intérprete
         this.stack = new ArrayDeque<>();
@@ -33,12 +40,25 @@ public class BitcoinInterpreter {
         this.cryptoOps = new CryptoOperations();
     }
 
-    // Devuelve la referencia a la pila, útil para pruebas
+    /**
+     * Obtiene la pila principal de la transaccion.
+     *
+     * @return El ArrayDeque que representa la pila de datos
+     */
+    // Devuelve la referencia a la pila para ver su estado actual
     public ArrayDeque<String> getStack() {
         return this.stack;
     }
 
-    // se agrega "throws Exception" para que el controlador atrape los errores
+    /**
+     * Evalua un script completo de Bitcoin.
+     *
+     * @param scriptTokens Arreglo de cadenas que representan las instrucciones y datos.
+     * @param view         Instancia de la vista para imprimir el rastro de la ejecucion.
+     * @param trace        Bandera para activar la impresion paso a paso.
+     * @return true si la transaccion es valida, false en caso contrario.
+     * @throws Exception Si ocurre un error fatal durante la evaluacion de una operacion.
+     */
     public boolean evaluate(String[] scriptTokens, view.View view, boolean trace) throws Exception {
         
         // Pila auxiliar para manejar bloques OP_IF anidados
@@ -73,12 +93,12 @@ public class BitcoinInterpreter {
                 continue;
             }
 
-            // IGNORAR INSTRUCCIONES INACTIVAS
+            // IIgnora cualquier operación si estamos dentro de un bloque OP_IF que ya ha evaluado a falso
             if (conditionStack.contains(false)) {
                 continue; 
             }
 
-            // ENRUTAMIENTO DE OPERACIONES
+            // Enruta la ejecución según el tipo de token (OP_ vs dato literal)
             if (token.startsWith("OP_")) {
                 
                 // Se enruta hacia las Operaciones de Pila
@@ -117,7 +137,7 @@ public class BitcoinInterpreter {
                 stack.push(token);
             }
 
-            // MODO RASTREO
+            // Modo que imprime el token actual y el estado de la pila después de cada operación
             if (trace && view != null) {
                 view.printTrace(token, stack);
             }

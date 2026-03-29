@@ -3,7 +3,7 @@ package controller;
 import interpreter.BitcoinInterpreter;
 import view.View;
 /**
- * Clase principal que controla la ejecucion del Interprete de Bitcoin.
+ * Clase principal que controla la ejecucion del Interprete de Bitcoin
  */
 public class Main {
 
@@ -78,7 +78,7 @@ public class Main {
 
         } catch (Exception e) {
 
-            // Atrapa excepciones fatales (ej. fallos en OP_EQUALVERIFY) y muestra el motivo
+            // Atrapa excepciones fatales (como fallos en OP_EQUALVERIFY) y muestra el motivo
             view.printError(e.getMessage());
             
             // Marca la transaccion como invalida debido al error detectado

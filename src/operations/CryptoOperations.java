@@ -3,8 +3,19 @@ package operations;
 import crypto.CryptoMock;
 import java.util.ArrayDeque;
 
+/**
+ * Clase responsable de manejar las instrucciones criptograficas de Bitcoin Script.
+ * Implementa la interfaz Opcode.
+ */
 public class CryptoOperations implements Opcode {
 
+    /**
+     * Interpreta y ejecuta operaciones como hashes y verificaciones de firmas.
+     *
+     * @param opcode La operacion a ejecutar (como OP_HASH160).
+     * @param stack  La pila de datos actual.
+     * @param crypto La instancia del simulador criptografico.
+     */
     @Override
     public void execute(String opcode, ArrayDeque<String> stack, CryptoMock crypto) {
 

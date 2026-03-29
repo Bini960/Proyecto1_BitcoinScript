@@ -3,8 +3,19 @@ package operations;
 import crypto.CryptoMock;
 import java.util.ArrayDeque;
 
+/**
+ * Clase responsable de las operaciones aritmeticas y comparaciones numericas
+ * Implementa la interfaz Opcode.
+ */
 public class MathOperations implements Opcode {
 
+    /**
+     * Interpreta la instruccion matematica, convierte los textos a enteros, opera y devuelve el resultado a la pila.
+     *
+     * @param opcode La instruccion matematica a procesar (ejemplo: OP_ADD, OP_GREATERTHAN).
+     * @param stack  La pila principal de la transaccion.
+     * @param crypto Instancia criptografica 
+     */
     @Override
     public void execute(String opcode, ArrayDeque<String> stack, CryptoMock crypto) {
         // Todas las operaciones matemáticas básicas requieren 2 operandos
@@ -37,7 +48,7 @@ public class MathOperations implements Opcode {
                 break;
                 
             case "OP_LESSTHAN":
-                // Verifica si 'a' es menor que 'b'. Si es cierto mete 1, si no, mete 0
+                // Verifica si a es menor que b. Si es verdadero mete 1, si no, mete 0
                 stack.push((a < b) ? "1" : "0");
                 break;
                 
