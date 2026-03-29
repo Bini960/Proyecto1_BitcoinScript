@@ -7,19 +7,14 @@ import view.View;
  */
 public class Main {
 
-    // Punto de entrada principal del programa
+    /**
+     * Punto de entrada principal del programa.
+     * * @param args Argumentos de linea de comandos (ej. --trace).
+     */
     public static void main(String[] args) {
 
         // Imprime los mensajes de bienvenida en la consola
         System.out.println("Iniciando Interprete de Bitcoin Script...");
-        System.out.println("Ejecutando transaccion P2PKH de prueba...\n");
-
-        // Define el script de desbloqueo (scriptSig) que contiene la firma y la llave
-        String scriptSig = "firma_valida llave_publica_andres";
-
-        // Define el script de bloqueo (scriptPubKey) con la estructura estandar P2PKH
-        String scriptPubKey =
-                "OP_DUP OP_HASH160 hash160_llave_publica_andres OP_EQUALVERIFY OP_CHECKSIG";
 
        // Deteccion automatica del argumento --trace desde la consola
         boolean trace = false;
@@ -31,8 +26,27 @@ public class Main {
             }
         }
 
+        // DEMOSTRACION 1: Transaccion P2PKH Exitosa
+        System.out.println("--Ejecutando transaccion P2PKH de prueba (Exitosa)");
+        
+        // Define el script de desbloqueo (scriptSig) que contiene la firma y la llave
+        String scriptSig = "firma_valida llave_publica_andres";
+
+        // Define el script de bloqueo (scriptPubKey) con la estructura estandar P2PKH
+        String scriptPubKey = "OP_DUP OP_HASH160 hash160_llave_publica_andres OP_EQUALVERIFY OP_CHECKSIG";
+
         // Inicia el proceso de ejecucion de la transaccion
         run(scriptSig, scriptPubKey, trace);
+
+
+        // DEMOSTRACION 2: Transaccion P2PKH Fallida
+        System.out.println("\n>>> --Ejecutando transaccion P2PKH de prueba (Firma Incorrecta)");
+        
+        // Define un script de desbloqueo con una firma erronea para provocar el fallo
+        String scriptSigIncorrecto = "firma_falsa llave_publica_andres";
+
+        // Inicia el proceso usando el script incorrecto pero contra el mismo candado original
+        run(scriptSigIncorrecto, scriptPubKey, trace);
     }
 
     /**
