@@ -2,7 +2,9 @@ package controller;
 
 import interpreter.BitcoinInterpreter;
 import view.View;
-
+/**
+ * Clase principal que controla la ejecucion del Interprete de Bitcoin.
+ */
 public class Main {
 
     // Punto de entrada principal del programa
@@ -19,14 +21,27 @@ public class Main {
         String scriptPubKey =
                 "OP_DUP OP_HASH160 hash160_llave_publica_andres OP_EQUALVERIFY OP_CHECKSIG";
 
-        // Activa el modo de depuracion para mostrar el rastro de la pila en consola
-        boolean trace = true;
+       // Deteccion automatica del argumento --trace desde la consola
+        boolean trace = false;
+        for (String arg : args) {
+            if (arg.equals("--trace")) {
+                trace = true;
+                System.out.println("[Argumento --trace]\n");
+                break;
+            }
+        }
 
         // Inicia el proceso de ejecucion de la transaccion
         run(scriptSig, scriptPubKey, trace);
     }
 
-    // Orquesta la preparacion y validacion de los scripts
+    /**
+     * Controla la preparacion y validacion de los scripts.
+     *
+     * @param scriptSig    El script de desbloqueo (credenciales del usuario).
+     * @param scriptPubKey El script de bloqueo (condiciones originales).
+     * @param trace        Indica si se debe imprimir el rastro paso a paso.
+     */
     public static void run(String scriptSig, String scriptPubKey, boolean trace) {
 
         // Instancia el motor del interprete y la clase encargada de imprimir resultados
