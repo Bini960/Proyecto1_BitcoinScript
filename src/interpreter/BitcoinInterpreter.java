@@ -2,6 +2,7 @@ package interpreter;
 
 import crypto.CryptoMock;
 import java.util.ArrayDeque;
+import java.util.Stack;
 import operations.CryptoOperations;
 import operations.LogicOperations;
 import operations.MathOperations;
@@ -62,22 +63,35 @@ public class BitcoinInterpreter {
     public boolean evaluate(String[] scriptTokens, view.View view, boolean trace) throws Exception {
         
         // Pila auxiliar para manejar bloques OP_IF anidados
-        ArrayDeque<Boolean> conditionStack = new ArrayDeque<>();
+        Stack<Boolean> conditionStack = new Stack<>();
         
         // se recorre el script completo de izquierda a derecha
         for (String token : scriptTokens) {
             
             
+            
             // LÓGICA DE CONTROL DE FLUJO (IF/ELSE)
+            // Manejo de control de flujo
             if (token.equals("OP_IF")) {
-                if (conditionStack.isEmpty() || !conditionStack.contains(false)) {
-                    if (stack.isEmpty()) throw new RuntimeException("Pila vacía al evaluar OP_IF");
-                    boolean condition = !stack.pop().equals("0");
-                    conditionStack.push(condition);
+                if (stack.isEmpty()) {
+                    throw new RuntimeException("Pila vacía en OP_IF");
+                }
+
+                boolean condition = !stack.pop().equals("0");
+
+                if (!conditionStack.isEmpty() && !conditionStack.peek()) {
+                    conditionStack.push(false);
                 } else {
-                    conditionStack.push(false); 
+                    conditionStack.push(condition);
                 }
                 continue;
+
+            } else if (token.equals("OP_ELSE")) {
+                if (conditionStack.isEmpty()) {
+                    throw new RuntimeException("OP_ELSE sin OP_IF");
+                }
+
+                boolean current = conditionStack.pop();
                 
             } else if (token.equals("OP_ELSE")) {
                 if (!conditionStack.isEmpty()) {
@@ -94,7 +108,7 @@ public class BitcoinInterpreter {
             }
 
             // IIgnora cualquier operación si estamos dentro de un bloque OP_IF que ya ha evaluado a falso
-            if (conditionStack.contains(false)) {
+            if (!conditionStack.isEmpty() && !conditionStack.peek()) {
                 continue; 
             }
 

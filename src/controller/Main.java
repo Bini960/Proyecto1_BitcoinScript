@@ -13,6 +13,24 @@ public class Main {
      */
     public static void main(String[] args) {
 
+        BitcoinInterpreter interpreter = new BitcoinInterpreter();
+
+        // 🔹 Script de demostración con OP_IF
+        String scriptDemoIf = "1 OP_IF dato_verdadero OP_ELSE dato_falso OP_ENDIF";
+
+        // Convertir el String a arreglo (como lo espera evaluate)
+        String[] scriptArray = scriptDemoIf.split(" ");
+
+        // Ejecutar con trace activado (true)
+        View view = new View();
+        boolean result = interpreter.evaluate(scriptArray, view, true);
+
+        // Mostrar resultado final
+        System.out.println("Resultado final del stack: " + interpreter.getStack());
+        System.out.println("Evaluación final: " + result);
+
+
+
         // Imprime los mensajes de bienvenida en la consola
         System.out.println("Iniciando Interprete de Bitcoin Script...");
 
