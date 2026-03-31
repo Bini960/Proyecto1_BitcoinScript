@@ -13,15 +13,19 @@ public class BitcoinInterpreterTest {
     public void testOperacionesDePilaBasicas() throws Exception {
         BitcoinInterpreter interpreter = new BitcoinInterpreter();
         // Simulamos un flujo de manipulación de pila
-        // Entra "A", se duplica, entra "B", se intercambian las posiciones y se elimina la cima
-        // Al final, solo debería quedar la "A" original
+        // A -> [A]
+        // OP_DUP -> [A, A]
+        // B -> [B, A, A]
+        // OP_SWAP -> Intercambia los dos de arriba, [A, B, A] 
+        // OP_DROP -> Elimina la cima [B, A]
+        // Al final, el elemento que queda en la cima es B
         String[] script = {"A", "OP_DUP", "B", "OP_SWAP", "OP_DROP"};
         
         boolean resultado = interpreter.evaluate(script, null, false);
         
         // Verificamos que no falló y que el valor final es el que calculamos
         assertTrue("La transacción debe completarse con éxito", resultado);
-        assertEquals("El elemento final en la pila debe ser 'A'", "A", interpreter.getStack().peek());
+        assertEquals("El elemento final en la pila debe ser B", "B", interpreter.getStack().peek());
     }
 
     @Test
