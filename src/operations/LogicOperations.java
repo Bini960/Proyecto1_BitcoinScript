@@ -14,7 +14,7 @@ public class LogicOperations implements Opcode {
      *
      * @param opcode La instruccion logica a procesar (como OP_EQUAL, OP_NOT).
      * @param stack  La pila principal de la transaccion.
-     * @param crypto La instancia criptografica compartida (no utilizada aqui, requerida por contrato).
+     * @param crypto La instancia criptografica compartida (no utilizada aqui, requerida por interfaz).
      */
     @Override
     public void execute(String opcode, ArrayDeque<String> stack, CryptoMock crypto) {

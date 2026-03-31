@@ -9,27 +9,9 @@ public class Main {
 
     /**
      * Punto de entrada principal del programa.
-     * * @param args Argumentos de linea de comandos (ej. --trace).
+     * * @param args Argumentos de linea de comandos (--trace).
      */
     public static void main(String[] args) {
-
-        BitcoinInterpreter interpreter = new BitcoinInterpreter();
-
-        // 🔹 Script de demostración con OP_IF
-        String scriptDemoIf = "1 OP_IF dato_verdadero OP_ELSE dato_falso OP_ENDIF";
-
-        // Convertir el String a arreglo (como lo espera evaluate)
-        String[] scriptArray = scriptDemoIf.split(" ");
-
-        // Ejecutar con trace activado (true)
-        View view = new View();
-        boolean result = interpreter.evaluate(scriptArray, view, true);
-
-        // Mostrar resultado final
-        System.out.println("Resultado final del stack: " + interpreter.getStack());
-        System.out.println("Evaluación final: " + result);
-
-
 
         // Imprime los mensajes de bienvenida en la consola
         System.out.println("Iniciando Interprete de Bitcoin Script...");
@@ -44,7 +26,7 @@ public class Main {
             }
         }
 
-        // DEMOSTRACION 1: Transaccion P2PKH Exitosa
+        // -DEMOSTRACION 1: Transaccion P2PKH Exitosa
         System.out.println("--Ejecutando transaccion P2PKH de prueba (Exitosa)");
         
         // Define el script de desbloqueo (scriptSig) que contiene la firma y la llave
@@ -57,7 +39,7 @@ public class Main {
         run(scriptSig, scriptPubKey, trace);
 
 
-        // DEMOSTRACION 2: Transaccion P2PKH Fallida
+        // -DEMOSTRACION 2: Transaccion P2PKH Fallida
         System.out.println("\n>>> --Ejecutando transaccion P2PKH de prueba (Firma Incorrecta)");
         
         // Define un script de desbloqueo con una firma erronea para provocar el fallo
@@ -65,7 +47,15 @@ public class Main {
 
         // Inicia el proceso usando el script incorrecto pero contra el mismo candado original
         run(scriptSigIncorrecto, scriptPubKey, trace);
+
+        // -DEMOSTRACION 3: Control de Flujo (OP_IF / OP_ELSE)
+        System.out.println("\n>>> --Ejecutando demostracion de OP_IF");
+        // Si hay un 1, entra al IF y deja "dato_verdadero" en la pila
+        String scriptSig3 = "1"; 
+        String scriptPubKey3 = "OP_IF dato_verdadero OP_ELSE dato_falso OP_ENDIF";
+        run(scriptSig3, scriptPubKey3, trace);
     }
+
 
     /**
      * Controla la preparacion y validacion de los scripts.

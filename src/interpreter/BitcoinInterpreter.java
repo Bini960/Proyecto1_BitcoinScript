@@ -14,7 +14,7 @@ import operations.StackOperations;
  */
 public class BitcoinInterpreter {
 
-    // ATRIBUTOS 
+    // Atributos principales 
     // ArrayDeque ofrece mejor rendimiento que Stack
     private ArrayDeque<String> stack;
     
@@ -84,30 +84,27 @@ public class BitcoinInterpreter {
                 } else {
                     conditionStack.push(condition);
                 }
+                if (trace && view != null) view.printTrace(token, stack);
                 continue;
 
             } else if (token.equals("OP_ELSE")) {
                 if (conditionStack.isEmpty()) {
                     throw new RuntimeException("OP_ELSE sin OP_IF");
                 }
-
                 boolean current = conditionStack.pop();
-                
-            } else if (token.equals("OP_ELSE")) {
-                if (!conditionStack.isEmpty()) {
-                    boolean current = conditionStack.pop();
-                    conditionStack.push(!current);
-                }
+                conditionStack.push(!current);
+                if (trace && view != null) view.printTrace(token, stack);
                 continue;
                 
             } else if (token.equals("OP_ENDIF")) {
                 if (!conditionStack.isEmpty()) {
                     conditionStack.pop();
                 }
+                if (trace && view != null) view.printTrace(token, stack);
                 continue;
             }
 
-            // IIgnora cualquier operación si estamos dentro de un bloque OP_IF que ya ha evaluado a falso
+            // Ignora cualquier operación si estamos dentro de un bloque OP_IF que ya ha evaluado a falso
             if (!conditionStack.isEmpty() && !conditionStack.peek()) {
                 continue; 
             }

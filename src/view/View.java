@@ -27,16 +27,16 @@ public class View {
      */
     public void printResult(boolean isValid) {
         if (isValid) {
-            System.out.println("RESULTADO: Transaccion Valida (Exito)");
+            System.out.println("RESULTADO: Transaccion Valida");
         } else {
-            System.out.println("RESULTADO: Transaccion Invalida (Fallo)");
+            System.out.println("RESULTADO: Transaccion Invalida");
         }
     }
 
     /**
-     * Imprime un mensaje especifico cuando el interprete atrapa un error fatal de ejecucion.
+     * Imprime un mensaje especifico cuando el interprete atrapa un error de ejecucion.
      *
-     * @param message El detalle tecnico de la excepcion atrapada.
+     * @param message El detalle de la excepcion atrapada.
      */
     public void printError(String message) {
         System.out.println("ERROR: " + message);
